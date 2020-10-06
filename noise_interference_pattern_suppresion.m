@@ -85,7 +85,7 @@ xpr = round(xp);
 ypr = round(yp);
 F_primate_1 = F_primate;
 for i = 1: length(xp)
-    F_primate_1(max(1,ypr(i)-2):min(ypr(i)+2, 255),max(1,xpr(i)-2):min(xpr(i)+2, 255))  =0;
+    F_primate_1(max(1,ypr(i)-2):min(ypr(i)+2, 256),max(1,xpr(i)-2):min(xpr(i)+2, 256))  =0;
 end
 % Recompute the power spectrum 
 S_primate_1= abs(F_primate_1);
@@ -112,11 +112,12 @@ for i = 1: length(xpr)
 end
 fprintf('\n');
 
-%% Improvement trial (Unused since it seems to have no effect to the resulting image)
+%% Improvement test (It seems to have little to no effect to the resulting image)
 F_primate_2 = F_primate_1;
 for i = [1,3,4]
-    F_primate_2(max(1,ypr(i)-50):min(ypr(i)+50,255), xpr(i)) =0;
-    % F_primate_2(yr(i), max(1,xr(i)-50):min(xr(i)+50,255)) =0;
+    % F_primate_2(max(1,ypr(i)-50):min(ypr(i)+50,256), xpr(i)) =0;
+    F_primate_2(:, xpr(i)) =0;
+    % F_primate_2(yr(i), max(1,xr(i)-50):min(xr(i)+50,256)) =0;
 end
 % Recompute the power spectrum 
 S_primate_2= abs(F_primate_2);
@@ -129,4 +130,8 @@ title('power spectrum after further removal')
 P_primate_2 = uint8(ifft2(F_primate_2));
 figure
 imshow(real(P_primate_2));
-title('Image after peak removal');
+title('Image after further removal');
+
+figure
+imshowpair(real(P_primate_1), real(P_primate_2), 'montage')
+title('Comparison of Image before and after further removal');
